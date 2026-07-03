@@ -1,33 +1,79 @@
 # DDYS Z-BlogPHP 插件
 
-中文 | [English](README.md)
+[English](README.md) | 中文
 
-[低端影视](https://ddys.io/) 接口的官方 Z-BlogPHP 插件。
+这是用于在 Z-BlogPHP 站点中嵌入 [低端影视](https://ddys.io/) 内容的官方插件。
+
+- GitHub 仓库：[ddysiodev/ddys-zblog-plugins](https://github.com/ddysiodev/ddys-zblog-plugins)
+- 插件合集说明：[../README.zh-CN.md](../README.zh-CN.md)
+- 插件目录：[`DdysOpen`](DdysOpen/)
+- 安装位置：`zb_users/plugin/DdysOpen`
 
 ## 功能
 
-- 原生 Z-BlogPHP 插件目录结构，安装目录为 `zb_users/plugin/DdysOpen`。
-- 支持最新、热门、影片列表、搜索、搜索建议、影片日历、影片详情、播放和下载资源、相关影片、评论、片单、分享、求片、动态、用户、类型、题材、地区。
-- 后台可配置 API Base URL、缓存时间、展示样式、来源链接、API Key、求片表单、诊断和缓存清理。
-- 自动解析文章、页面、模块里的 DDYS 短代码，并带页面输出兜底解析。
-- 提供 `DdysOpen/page.php` 公开页面，站长可以直接放到导航里。
-- 使用 `zb_users/cache/ddysopen` 文件缓存，减少对接口的重复请求。
-- 求片等写入功能走站点服务端，不在浏览器里暴露 API Key。
-- 无第三方运行依赖。
+前台展示：
+
+- 最新影片、热门影片。
+- 影片列表、搜索、搜索建议。
+- 影片日历。
+- 影片详情组件。
+- 资源、相关推荐、评论组件。
+- 片单、分享、求片、动态、用户、类型、题材、地区。
+- 用于提交求片的短代码表单。
+- `DdysOpen/page.php` 独立公开展示页。
+
+后台管理：
+
+- API Base URL 配置。
+- 可选 API Key，用于求片等写入接口。
+- 最新、列表、详情、字典、社区数据的缓存时间配置。
+- 主题、布局、列数、链接打开方式、来源链接配置。
+- 短代码生成器。
+- 缓存清理。
+- 接口连通性测试。
+
+运行方式：
+
+- 自动解析文章和页面里的短代码。
+- 在 Z-BlogPHP 暴露模块内容时解析模块短代码。
+- 增加页面输出缓冲兜底，兼容绕过常规内容渲染的主题。
+- 求片表单通过 `DdysOpen/request.php` 在站点服务端提交。
+- 缓存文件存放在 `zb_users/cache/ddysopen`。
 
 ## 安装
 
-1. 将 `DdysOpen` 目录复制到 `zb_users/plugin/DdysOpen`。
-2. 进入 Z-BlogPHP 后台。
-3. 启用 `DDYS` 插件。
-4. 打开后台 `DDYS` 菜单，先点一次 `测试 DDYS 接口`。
+1. 把 `DdysOpen` 目录复制到 `zb_users/plugin/DdysOpen`。
+2. 登录 Z-BlogPHP 后台。
+3. 进入插件管理，启用 `DDYS` 插件。
+4. 打开后台 `DDYS` 菜单。
+5. 检查 API Base URL、缓存、展示和求片表单配置。
+6. 保存配置。
+7. 在诊断区域执行一次接口测试。
 
-## 常用短代码
+## 配置项
+
+| 配置 | 作用 |
+| --- | --- |
+| API Base URL | 低端影视接口地址，也可以填写自己的代理地址。 |
+| API Key | 仅用于需要鉴权的求片提交。 |
+| Timeout | 请求接口的超时时间。 |
+| Dictionary cache TTL | 类型、题材、地区、日历等数据缓存。 |
+| Fresh cache TTL | 最新、热门组件缓存。 |
+| List cache TTL | 影片、搜索、片单、分享、求片列表缓存。 |
+| Detail cache TTL | 影片、资源、相关推荐、片单、分享详情缓存。 |
+| Community cache TTL | 评论、求片、动态缓存。 |
+| Theme 和 Layout | 前台卡片样式与排列方式。 |
+| Source link | 是否显示指向低端影视的来源链接。 |
+| Request form | 是否启用前台求片表单。 |
+
+## 短代码
 
 ```text
+[ddys_movies type="movie" limit="12"]
 [ddys_latest type="movie" limit="12"]
 [ddys_hot limit="10"]
 [ddys_search]
+[ddys_suggest q="dark"]
 [ddys_calendar year="2026" month="7"]
 [ddys_movie slug="this-tempting-madness"]
 [ddys_sources slug="this-tempting-madness"]
@@ -46,9 +92,21 @@
 [ddys_request_form]
 ```
 
-后台带短代码生成器，可以选择类型、slug、数量、布局后直接复制。
+常用属性：
 
-## 公开页面
+| 属性 | 用途 | 示例 |
+| --- | --- | --- |
+| `type` | 最新、影片列表、搜索、动态 | `type="movie"` |
+| `limit` | 最新、热门、影片列表 | `limit="12"` |
+| `page` | 分页列表 | `page="2"` |
+| `per_page` | 分页列表、评论 | `per_page="20"` |
+| `slug` | 影片、资源、相关推荐、评论、片单 | `slug="this-tempting-madness"` |
+| `id` | 分享详情 | `id="1"` |
+| `username` | 用户详情 | `username="demo"` |
+| `layout` | 组件布局 | `layout="grid"` |
+| `target` | 链接打开方式 | `target="_blank"` |
+
+## 公开展示页
 
 ```text
 zb_users/plugin/DdysOpen/page.php?view=latest
@@ -60,21 +118,29 @@ zb_users/plugin/DdysOpen/page.php?view=collections
 zb_users/plugin/DdysOpen/page.php?view=requests
 ```
 
-## 缓存建议
+这些页面适合直接加入主题导航，作为站点里的低端影视专区。
 
-- 类型、题材、地区：24 小时。
-- 最新、热门：5 分钟。
-- 列表和搜索：10 分钟。
-- 详情和资源：30 分钟。
-- 评论、求片、动态：2 分钟。
+## 安全与边界处理
 
-## 环境
-
-- Z-BlogPHP 插件结构。
-- PHP 5.6+。
-- 优先使用 cURL，请求不可用时会尝试 PHP stream。
+- 后台保存配置需要管理员权限。
+- 保存配置时会使用 Z-BlogPHP 可用的 CSRF 校验能力。
+- 前台输出会做转义。
+- 求片表单带基础限流。
+- API Key 不会输出到前台 JavaScript。
+- 详情短代码缺少必要属性时会显示可读错误。
+- 缓存时间设为 `0` 可以关闭对应缓存。
+- 接口网络异常时显示错误提示，不会中断整个页面。
 
 ## 本地检查
+
+在 `zblogphp` 目录运行：
+
+```bash
+node tools/check.mjs
+node --test tests/*.test.mjs
+```
+
+在插件合集根目录运行完整检查：
 
 ```bash
 node tools/check.mjs
