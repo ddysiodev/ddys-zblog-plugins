@@ -3,7 +3,7 @@
   <id>DdysOpen</id>
   <name>DDYS</name>
   <url>https://github.com/ddysiodev/ddys-zblog-plugins</url>
-  <note>DDYS Open API widgets for Z-BlogASP.</note>
+  <note>低端影视 API 的 Z-BlogASP 展示插件。</note>
   <path>main.asp</path>
   <include>include.asp</include>
   <level>1</level>

@@ -218,7 +218,7 @@ async function checkForbiddenFiles() {
 
 async function checkForbiddenText() {
   const files = await listFiles(root);
-  const patterns = ['ghp' + '_', 'npm' + '_', '2026' + 'facai', 'x9k' + 'Nx', 'OpenAI', 'AI Agent', 'GPT', 'Open API', 'Do not ' + 'bundle'];
+  const patterns = ['ghp' + '_', 'npm' + '_', '2026' + 'facai', 'x9k' + 'Nx', 'OpenAI', 'AI Agent', 'GPT', 'Open' + ' API', 'Do not ' + 'bundle'];
   for (const full of files) {
     const rel = relative(root, full).replace(/\\/g, '/');
     if (rel === 'tools/check.mjs' || /\.(png|jpg|jpeg|webp|gif)$/i.test(rel)) {
