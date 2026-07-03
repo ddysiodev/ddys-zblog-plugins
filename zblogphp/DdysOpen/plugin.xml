@@ -2,7 +2,7 @@
 <plugin version="php">
   <id>DdysOpen</id>
   <name>DDYS</name>
-  <url>https://github.com/ddysiodev/ddys-zblogphp-plugin</url>
+  <url>https://github.com/ddysiodev/ddys-zblog-plugins</url>
   <note>低端影视接口 Z-BlogPHP 插件</note>
   <description>在 Z-BlogPHP 站点中展示低端影视最新、热门、搜索、日历、详情、片单、分享和求片内容。</description>
   <path>main.php</path>

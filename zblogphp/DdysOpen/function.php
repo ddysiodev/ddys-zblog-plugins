@@ -242,7 +242,7 @@ class DdysOpen_ApiClient
 
         $headers = array(
             'Accept: application/json',
-            'User-Agent: ddys-zblogphp-plugin/' . DDYSOPEN_VERSION . '; ' . (isset($zbp->host) ? $zbp->host : 'zblogphp'),
+            'User-Agent: ddys-zblog-plugins-zblogphp/' . DDYSOPEN_VERSION . '; ' . (isset($zbp->host) ? $zbp->host : 'zblogphp'),
         );
         if (!empty($options['auth'])) {
             if (empty($this->settings['api_key'])) {

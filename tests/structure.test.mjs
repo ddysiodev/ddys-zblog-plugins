@@ -35,7 +35,18 @@ test('Z-BlogASP has server-side proxy and request form protection', async () => 
   assert.match(fn, /DdysOpen_ProxyResponse/);
   assert.match(fn, /Authorization/);
   assert.match(fn, /DdysOpen_CheckRateLimit/);
+  assert.match(fn, /DdysOpen_FrontendAssets/);
+  assert.match(fn, /Invalid route parameters/);
+  assert.match(fn, /InStr\(response, """success"":false"\)/);
+  assert.match(fn, /lastTime > nowTime/);
   assert.match(request, /REQUEST_METHOD/);
+});
+
+test('Z-BlogASP frontend renders nested detail data safely', async () => {
+  const js = await read('zblogasp/DdysOpen/assets/js/frontend.js');
+  assert.match(js, /renderResourceGroups/);
+  assert.match(js, /safeResourceUrl/);
+  assert.match(js, /magnet:/);
 });
 
 test('both plugins carry copied DDYS icon sizes', async () => {

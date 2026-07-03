@@ -39,10 +39,20 @@ for (const text of ['<id>DdysOpen</id>', '<include>include.asp</include>', '<pat
 for (const text of ['RegisterPlugin("DdysOpen"', 'ActivePlugin_DdysOpen', 'Response_Plugin_Admin_Left', 'Filter_Plugin_TArticle_Export_TemplateTags']) {
   if (!include.includes(text)) failures.push(`include.asp missing ${text}`);
 }
-for (const text of ['DdysOpen_ProxyResponse', 'DdysOpen_RequestResponse', 'DdysOpen_ParseShortcodes', 'Authorization', 'DdysOpen_CheckRateLimit']) {
+for (const text of [
+  'DdysOpen_ProxyResponse',
+  'DdysOpen_RequestResponse',
+  'DdysOpen_ParseShortcodes',
+  'Authorization',
+  'DdysOpen_CheckRateLimit',
+  'DdysOpen_FrontendAssets',
+  'Invalid route parameters',
+  'InStr(response, """success"":false")',
+  'If lastTime > nowTime Then lastTime = 0'
+]) {
   if (!fn.includes(text)) failures.push(`function.asp missing ${text}`);
 }
-for (const text of ['data-ddys-widget', 'data-ddys-request-form', 'fetch(', 'URLSearchParams']) {
+for (const text of ['data-ddys-widget', 'data-ddys-request-form', 'fetch(', 'URLSearchParams', 'renderResourceGroups', 'safeResourceUrl']) {
   if (!js.includes(text)) failures.push(`frontend.js missing ${text}`);
 }
 

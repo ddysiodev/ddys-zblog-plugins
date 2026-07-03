@@ -57,6 +57,37 @@
     el.innerHTML = '<div class="ddys-asp-items">' + items.map(function (item) { return card(item, target); }).join('') + '</div>';
   }
 
+  function safeResourceUrl(url) {
+    if (!url) return '';
+    if (/^(https?:|magnet:|ed2k:|thunder:)/i.test(url)) return url;
+    if (url.charAt(0) === '/') return 'https://ddys.io' + url;
+    return '';
+  }
+
+  function renderResourceGroups(data) {
+    var groups = [];
+    if (Array.isArray(data.resources)) groups.push({ name: 'Resources', items: data.resources });
+    if (data.resources && !Array.isArray(data.resources) && typeof data.resources === 'object') {
+      Object.keys(data.resources).forEach(function (name) {
+        groups.push({ name: name, items: Array.isArray(data.resources[name]) ? data.resources[name] : [] });
+      });
+    }
+    if (!groups.length && data.sources && typeof data.sources === 'object') {
+      Object.keys(data.sources).forEach(function (name) {
+        groups.push({ name: name, items: Array.isArray(data.sources[name]) ? data.sources[name] : [] });
+      });
+    }
+    return groups.map(function (group) {
+      if (!group.items.length) return '';
+      return '<section class="ddys-asp-detail"><h3>' + escapeHtml(group.name) + '</h3>' +
+        group.items.map(function (resource) {
+          var title = resource.title || resource.name || resource.download_type || resource.type || 'Resource';
+          var url = safeResourceUrl(resource.url || resource.link || resource.href || '');
+          return '<p class="ddys-asp-resource">' + (url ? '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener">' + escapeHtml(title) + '</a>' : escapeHtml(title)) + '</p>';
+        }).join('') + '</section>';
+    }).join('');
+  }
+
   function renderDetail(el, payload) {
     var data = getData(payload);
     if (!data || typeof data !== 'object') {
@@ -65,9 +96,13 @@
     }
     var title = data.title || data.name || 'Detail';
     var intro = data.intro || data.description || data.summary || data.note || '';
+    var target = el.getAttribute('data-target') || '_blank';
+    var childMovies = Array.isArray(data.movies) && data.movies.length
+      ? '<div class="ddys-asp-items">' + data.movies.map(function (item) { return card(item, target); }).join('') + '</div>'
+      : '';
     el.innerHTML = '<article class="ddys-asp-detail">' + card(data, el.getAttribute('data-target') || '_blank') +
       (intro ? '<div class="ddys-asp-description">' + escapeHtml(intro) + '</div>' : '') +
-      '</article>';
+      childMovies + renderResourceGroups(data) + '</article>';
   }
 
   function renderSources(el, payload) {

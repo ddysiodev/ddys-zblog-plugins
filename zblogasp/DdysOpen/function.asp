@@ -116,6 +116,7 @@ Function DdysOpen_JsonString(value)
 	value = CStr(value)
 	value = Replace(value, "\", "\\")
 	value = Replace(value, """", "\""")
+	value = Replace(value, vbTab, "\t")
 	value = Replace(value, vbCrLf, "\n")
 	value = Replace(value, vbCr, "\n")
 	value = Replace(value, vbLf, "\n")
@@ -300,17 +301,24 @@ Function DdysOpen_ApiPath(route)
 		Case "search": DdysOpen_ApiPath = "/search"
 		Case "suggest": DdysOpen_ApiPath = "/suggest"
 		Case "calendar": DdysOpen_ApiPath = "/calendar"
-		Case "movie": DdysOpen_ApiPath = "/movies/" & Server.URLEncode(slug)
-		Case "sources": DdysOpen_ApiPath = "/movies/" & Server.URLEncode(slug) & "/sources"
-		Case "related": DdysOpen_ApiPath = "/movies/" & Server.URLEncode(slug) & "/related"
-		Case "comments": DdysOpen_ApiPath = "/movies/" & Server.URLEncode(slug) & "/comments"
+		Case "movie"
+			If slug = "" Then DdysOpen_ApiPath = "" Else DdysOpen_ApiPath = "/movies/" & Server.URLEncode(slug)
+		Case "sources"
+			If slug = "" Then DdysOpen_ApiPath = "" Else DdysOpen_ApiPath = "/movies/" & Server.URLEncode(slug) & "/sources"
+		Case "related"
+			If slug = "" Then DdysOpen_ApiPath = "" Else DdysOpen_ApiPath = "/movies/" & Server.URLEncode(slug) & "/related"
+		Case "comments"
+			If slug = "" Then DdysOpen_ApiPath = "" Else DdysOpen_ApiPath = "/movies/" & Server.URLEncode(slug) & "/comments"
 		Case "collections": DdysOpen_ApiPath = "/collections"
-		Case "collection": DdysOpen_ApiPath = "/collections/" & Server.URLEncode(slug)
+		Case "collection"
+			If slug = "" Then DdysOpen_ApiPath = "" Else DdysOpen_ApiPath = "/collections/" & Server.URLEncode(slug)
 		Case "shares": DdysOpen_ApiPath = "/shares"
-		Case "share": DdysOpen_ApiPath = "/shares/" & Server.URLEncode(id)
+		Case "share"
+			If id = "" Then DdysOpen_ApiPath = "" Else DdysOpen_ApiPath = "/shares/" & Server.URLEncode(id)
 		Case "requests": DdysOpen_ApiPath = "/requests"
 		Case "activities": DdysOpen_ApiPath = "/activities"
-		Case "user": DdysOpen_ApiPath = "/user/" & Server.URLEncode(username)
+		Case "user"
+			If username = "" Then DdysOpen_ApiPath = "" Else DdysOpen_ApiPath = "/user/" & Server.URLEncode(username)
 		Case "types": DdysOpen_ApiPath = "/types"
 		Case "genres": DdysOpen_ApiPath = "/genres"
 		Case "regions": DdysOpen_ApiPath = "/regions"
@@ -358,29 +366,33 @@ Function DdysOpen_ProxyResponse()
 		Exit Function
 	End If
 	response = DdysOpen_HttpRequest("GET", url, "", Empty)
-	Call DdysOpen_CacheWrite(cacheKey, response)
+	If response <> "" And InStr(response, """success"":false") = 0 Then
+		Call DdysOpen_CacheWrite(cacheKey, response)
+	End If
 	DdysOpen_ProxyResponse = response
 End Function
 
 Function DdysOpen_CheckRateLimit(scope, key, interval)
 	On Error Resume Next
-	Dim cacheKey, path, lastText, lastTime
+	Dim cacheKey, path, lastText, lastTime, nowTime
 	DdysOpen_CheckRateLimit = True
 	If interval <= 0 Then Exit Function
 	cacheKey = "rate_" & scope & "_" & key
 	path = DdysOpen_CacheDir() & DdysOpen_SafeFileName(cacheKey) & ".txt"
 	lastTime = 0
 	lastText = ""
+	nowTime = DateDiff("s", #1/1/1970#, Now())
 	Dim fso
 	Set fso = Server.CreateObject("Scripting.FileSystemObject")
 	If fso.FileExists(path) Then lastText = DdysOpen_ReadTextFile(path)
 	Set fso = Nothing
 	If IsNumeric(lastText) Then lastTime = CLng(lastText)
-	If lastTime > 0 And DateDiff("s", DateAdd("s", lastTime, #1/1/1970#), Now()) < interval Then
+	If lastTime > nowTime Then lastTime = 0
+	If lastTime > 0 And nowTime - lastTime < interval Then
 		DdysOpen_CheckRateLimit = False
 		Exit Function
 	End If
-	Call DdysOpen_WriteTextFile(path, CStr(DateDiff("s", #1/1/1970#, Now())))
+	Call DdysOpen_WriteTextFile(path, CStr(nowTime))
 	Err.Clear
 End Function
 
@@ -460,7 +472,7 @@ Function DdysOpen_RenderShortcode(tag, attrText)
 	apiUrl = DdysOpen_PluginUrl() & "api.asp"
 	requestUrl = DdysOpen_PluginUrl() & "request.asp"
 	If kind = "request_form" Then
-		DdysOpen_RenderShortcode = "<form class=""ddys-asp ddys-asp-request-form"" method=""post"" action=""" & DdysOpen_Attr(requestUrl) & """ data-ddys-request-form>" & _
+		DdysOpen_RenderShortcode = DdysOpen_FrontendAssets() & "<form class=""ddys-asp ddys-asp-request-form"" method=""post"" action=""" & DdysOpen_Attr(requestUrl) & """ data-ddys-request-form>" & _
 			"<label>Title<input type=""text"" name=""title"" maxlength=""255"" required></label>" & _
 			"<label>Year<input type=""number"" name=""year"" min=""1900"" max=""2099""></label>" & _
 			"<label>Type<select name=""type""><option value=""""></option><option value=""movie"">movie</option><option value=""series"">series</option><option value=""variety"">variety</option><option value=""anime"">anime</option></select></label>" & _
@@ -478,6 +490,19 @@ Function DdysOpen_RenderShortcode(tag, attrText)
 	html = html & " data-layout=""" & DdysOpen_Attr(DdysOpen_Attribute(attrText, "layout", DdysOpen_Config("layout"))) & """"
 	html = html & " data-target=""" & DdysOpen_Attr(DdysOpen_Attribute(attrText, "target", DdysOpen_Config("target"))) & """"
 	html = html & "><div class=""ddys-asp-loading"">Loading DDYS...</div></div>"
-	DdysOpen_RenderShortcode = html
+	DdysOpen_RenderShortcode = DdysOpen_FrontendAssets() & html
+End Function
+
+Dim DdysOpen_AssetsPrinted
+DdysOpen_AssetsPrinted = False
+
+Function DdysOpen_FrontendAssets()
+	If DdysOpen_AssetsPrinted Or DdysOpen_Bool(DdysOpen_Config("enable_styles")) = False Then
+		DdysOpen_FrontendAssets = ""
+		Exit Function
+	End If
+	DdysOpen_AssetsPrinted = True
+	DdysOpen_FrontendAssets = "<link rel=""stylesheet"" type=""text/css"" href=""" & DdysOpen_Attr(DdysOpen_PluginUrl() & "assets/css/frontend.css?v=" & DDYSOPEN_VERSION) & """ />" & _
+		"<script defer src=""" & DdysOpen_Attr(DdysOpen_PluginUrl() & "assets/js/frontend.js?v=" & DDYSOPEN_VERSION) & """></script>"
 End Function
 %>

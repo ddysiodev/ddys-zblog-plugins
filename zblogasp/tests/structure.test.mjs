@@ -26,6 +26,9 @@ test('server-side proxy caches public DDYS routes', async () => {
   assert.match(fn, /DdysOpen_ProxyResponse/);
   assert.match(fn, /DdysOpen_CacheRead/);
   assert.match(fn, /DdysOpen_CacheWrite/);
+  assert.match(fn, /Invalid route parameters/);
+  assert.match(fn, /InStr\(response, """success"":false"\)/);
+  assert.match(fn, /lastTime > nowTime/);
 });
 
 test('request form keeps API key server-side', async () => {
@@ -41,7 +44,17 @@ test('frontend renders widgets without CDN dependencies', async () => {
   const js = await read('DdysOpen/assets/js/frontend.js');
   assert.match(js, /data-ddys-widget/);
   assert.match(js, /fetch\(/);
+  assert.match(js, /renderResourceGroups/);
+  assert.match(js, /safeResourceUrl/);
   assert.doesNotMatch(js, /unpkg|jsdelivr|npm/);
+});
+
+test('shortcodes inject frontend assets once for themes without hooks', async () => {
+  const fn = await read('DdysOpen/function.asp');
+  assert.match(fn, /DdysOpen_FrontendAssets/);
+  assert.match(fn, /DdysOpen_AssetsPrinted/);
+  assert.match(fn, /frontend\.css\?v=/);
+  assert.match(fn, /frontend\.js\?v=/);
 });
 
 async function read(file) {

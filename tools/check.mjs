@@ -93,7 +93,17 @@ async function checkAspPlugin() {
   for (const text of ['RegisterPlugin("DdysOpen"', 'ActivePlugin_DdysOpen', 'Response_Plugin_Admin_Left', 'Filter_Plugin_TArticle_Export_TemplateTags']) {
     if (!include.includes(text)) failures.push(`Z-BlogASP include.asp missing ${text}`);
   }
-  for (const text of ['DdysOpen_ProxyResponse', 'DdysOpen_AllowedRoute', 'DdysOpen_RequestResponse', 'Authorization', 'DdysOpen_ParseShortcodes']) {
+  for (const text of [
+    'DdysOpen_ProxyResponse',
+    'DdysOpen_AllowedRoute',
+    'DdysOpen_RequestResponse',
+    'Authorization',
+    'DdysOpen_ParseShortcodes',
+    'DdysOpen_FrontendAssets',
+    'Invalid route parameters',
+    'InStr(response, """success"":false")',
+    'If lastTime > nowTime Then lastTime = 0'
+  ]) {
     if (!fn.includes(text)) failures.push(`Z-BlogASP function.asp missing ${text}`);
   }
   if (!api.includes('Response.ContentType = "application/json"') || !api.includes('DdysOpen_ProxyResponse')) {
@@ -102,7 +112,7 @@ async function checkAspPlugin() {
   if (!request.includes('REQUEST_METHOD') || !request.includes('DdysOpen_RequestResponse')) {
     failures.push('Z-BlogASP request.asp must guard POST and call DdysOpen_RequestResponse.');
   }
-  for (const text of ['data-ddys-widget', 'data-ddys-request-form', 'URLSearchParams', 'fetch(']) {
+  for (const text of ['data-ddys-widget', 'data-ddys-request-form', 'URLSearchParams', 'fetch(', 'renderResourceGroups', 'safeResourceUrl']) {
     if (!js.includes(text)) failures.push(`Z-BlogASP frontend.js missing ${text}`);
   }
   const aspFiles = (await listFiles(join(root, 'zblogasp'))).filter((file) => file.endsWith('.asp'));
