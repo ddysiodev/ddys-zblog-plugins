@@ -1,0 +1,47 @@
+.ddys-asp-admin .divHeader img {
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.ddys-asp-wide {
+  width: min(620px, 95%);
+}
+
+.ddys-asp-settings .note {
+  margin: 4px 0 0;
+  color: #777;
+  font-size: 12px;
+}
+
+.ddys-asp-admin-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 360px) minmax(320px, 1fr);
+  gap: 16px;
+}
+
+.ddys-asp-panel {
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 14px;
+}
+
+.ddys-asp-panel h3 {
+  margin-top: 0;
+}
+
+.ddys-asp-panel label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.ddys-asp-panel input,
+.ddys-asp-panel select,
+.ddys-asp-panel textarea {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .ddys-asp-admin-grid {
+    grid-template-columns: 1fr;
+  }
+}

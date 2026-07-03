@@ -1,0 +1,11 @@
+.env
+.env.*
+*.local
+*.log
+*.zip
+*.bak
+node_modules/
+vendor/
+dist/
+build/
+coverage/

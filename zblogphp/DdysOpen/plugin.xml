@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin version="php">
+  <id>DdysOpen</id>
+  <name>DDYS</name>
+  <url>https://github.com/ddysiodev/ddys-zblogphp-plugin</url>
+  <note>低端影视接口 Z-BlogPHP 插件</note>
+  <description>在 Z-BlogPHP 站点中展示低端影视最新、热门、搜索、日历、详情、片单、分享和求片内容。</description>
+  <path>main.php</path>
+  <include>include.php</include>
+  <level>1</level>
+  <author>
+    <name>DDYS</name>
+    <email>dev@ddys.io</email>
+    <url>https://ddys.io</url>
+  </author>
+  <source>
+    <name>DDYS</name>
+    <email>dev@ddys.io</email>
+    <url>https://ddys.io</url>
+  </source>
+  <adapted>172000</adapted>
+  <version>1.0.0</version>
+  <pubdate>2026-07-03</pubdate>
+  <modified>2026-07-03</modified>
+  <price>0</price>
+  <phpver>5.6</phpver>
+  <advanced>
+    <dependency></dependency>
+    <rewritefunctions></rewritefunctions>
+    <existsfunctions></existsfunctions>
+    <conflict></conflict>
+  </advanced>
+  <sidebars>
+    <sidebar1></sidebar1>
+    <sidebar2></sidebar2>
+    <sidebar3></sidebar3>
+    <sidebar4></sidebar4>
+    <sidebar5></sidebar5>
+    <sidebar6></sidebar6>
+    <sidebar7></sidebar7>
+    <sidebar8></sidebar8>
+    <sidebar9></sidebar9>
+  </sidebars>
+</plugin>

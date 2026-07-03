@@ -1,0 +1,248 @@
+.ddys-zbp {
+  --ddys-zbp-bg: #ffffff;
+  --ddys-zbp-surface: #f6f8fa;
+  --ddys-zbp-text: #17212b;
+  --ddys-zbp-muted: #667080;
+  --ddys-zbp-border: #dde4ec;
+  --ddys-zbp-accent: #06c49c;
+  box-sizing: border-box;
+  color: var(--ddys-zbp-text);
+  margin: 18px 0;
+}
+
+.ddys-zbp * {
+  box-sizing: border-box;
+}
+
+.ddys-zbp-theme-dark {
+  --ddys-zbp-bg: #15191d;
+  --ddys-zbp-surface: #20262b;
+  --ddys-zbp-text: #f2f6f8;
+  --ddys-zbp-muted: #a6b0bc;
+  --ddys-zbp-border: #38434c;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ddys-zbp-theme-auto {
+    --ddys-zbp-bg: #15191d;
+    --ddys-zbp-surface: #20262b;
+    --ddys-zbp-text: #f2f6f8;
+    --ddys-zbp-muted: #a6b0bc;
+    --ddys-zbp-border: #38434c;
+  }
+}
+
+.ddys-zbp-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.ddys-zbp-layout-list .ddys-zbp-items,
+.ddys-zbp-layout-compact .ddys-zbp-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.ddys-zbp-card,
+.ddys-zbp-detail,
+.ddys-zbp-source-group,
+.ddys-zbp-empty,
+.ddys-zbp-error {
+  border: 1px solid var(--ddys-zbp-border);
+  border-radius: 8px;
+  background: var(--ddys-zbp-bg);
+}
+
+.ddys-zbp-card {
+  display: flex;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px;
+}
+
+.ddys-zbp-layout-grid .ddys-zbp-card {
+  flex-direction: column;
+}
+
+.ddys-zbp-card-poster {
+  aspect-ratio: 2 / 3;
+  width: 100%;
+  max-width: 220px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--ddys-zbp-surface);
+}
+
+.ddys-zbp-layout-list .ddys-zbp-card-poster,
+.ddys-zbp-layout-compact .ddys-zbp-card-poster {
+  flex: 0 0 84px;
+  width: 84px;
+}
+
+.ddys-zbp-card-poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ddys-zbp-card-body {
+  min-width: 0;
+}
+
+.ddys-zbp-card-title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.ddys-zbp-card-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ddys-zbp-card-title a:hover {
+  color: var(--ddys-zbp-accent);
+}
+
+.ddys-zbp-card-meta,
+.ddys-zbp-card-summary,
+.ddys-zbp-meta,
+.ddys-zbp-source-link {
+  color: var(--ddys-zbp-muted);
+  font-size: 14px;
+}
+
+.ddys-zbp-card-summary {
+  line-height: 1.55;
+}
+
+.ddys-zbp-detail,
+.ddys-zbp-source-group,
+.ddys-zbp-empty,
+.ddys-zbp-error {
+  padding: 14px;
+}
+
+.ddys-zbp-error {
+  border-color: #cf2e2e;
+  color: #b42318;
+}
+
+.ddys-zbp-sources,
+.ddys-zbp-calendar {
+  display: grid;
+  gap: 18px;
+}
+
+.ddys-zbp-calendar-day {
+  border-top: 1px solid var(--ddys-zbp-border);
+  padding-top: 12px;
+}
+
+.ddys-zbp-search-form,
+.ddys-zbp-request-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.ddys-zbp-search-form input,
+.ddys-zbp-search-form select,
+.ddys-zbp-request-form input,
+.ddys-zbp-request-form select,
+.ddys-zbp-request-form textarea {
+  min-height: 38px;
+  border: 1px solid var(--ddys-zbp-border);
+  border-radius: 6px;
+  padding: 7px 10px;
+}
+
+.ddys-zbp-request-form label {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.ddys-zbp-request-form textarea {
+  min-width: 260px;
+  min-height: 74px;
+}
+
+.ddys-zbp-search-form button,
+.ddys-zbp-request-form button {
+  min-height: 38px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--ddys-zbp-accent);
+  color: #06221b;
+  cursor: pointer;
+  padding: 7px 14px;
+}
+
+.ddys-zbp-taxonomy-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ddys-zbp-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--ddys-zbp-border);
+  border-radius: 999px;
+  padding: 5px 10px;
+}
+
+.ddys-zbp-page {
+  margin: 0;
+  background: #f4f7fa;
+  color: #17212b;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.ddys-zbp-page-main {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 48px;
+}
+
+.ddys-zbp-page-header {
+  margin-bottom: 20px;
+}
+
+.ddys-zbp-page-header h1 {
+  margin: 8px 0 12px;
+}
+
+.ddys-zbp-page-header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ddys-zbp-page-header a {
+  color: #087d67;
+}
+
+@media (max-width: 640px) {
+  .ddys-zbp-card,
+  .ddys-zbp-layout-grid .ddys-zbp-card {
+    flex-direction: row;
+  }
+
+  .ddys-zbp-layout-grid .ddys-zbp-card-poster {
+    flex: 0 0 84px;
+    width: 84px;
+  }
+
+  .ddys-zbp-search-form,
+  .ddys-zbp-request-form {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

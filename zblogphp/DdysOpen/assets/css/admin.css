@@ -1,0 +1,55 @@
+.ddys-zbp-admin .divHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ddys-zbp-admin .tableFull th {
+  text-align: left;
+}
+
+.ddys-zbp-input-wide {
+  width: min(640px, 100%);
+}
+
+.ddys-zbp-admin-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 420px) minmax(320px, 1fr);
+  gap: 18px;
+  max-width: 1120px;
+}
+
+.ddys-zbp-panel {
+  border: 1px solid #d9e0e7;
+  background: #fff;
+  padding: 16px;
+}
+
+.ddys-zbp-panel label {
+  display: block;
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+
+.ddys-zbp-panel input,
+.ddys-zbp-panel select,
+.ddys-zbp-panel textarea {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+}
+
+#ddys-zbp-shortcode-output {
+  font-family: Consolas, Monaco, monospace;
+}
+
+.ddys-zbp-settings .note {
+  margin: 4px 0 0;
+  color: #687385;
+}
+
+@media (max-width: 900px) {
+  .ddys-zbp-admin-grid {
+    grid-template-columns: 1fr;
+  }
+}
